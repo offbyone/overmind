@@ -4,20 +4,28 @@ on:
   - push
   - pull_request
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
-        go-version: ["1.21.x"]
+        go-version: ["1.24.x"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: ${{ matrix.go-version }}
       - name: Cache mods
-        uses: actions/cache@v3
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: |
             ~/.cache/go-build
@@ -26,8 +34,8 @@ jobs:
       - name: Download mods
         run: go mod download
       - name: Lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
         with:
-          version: v1.54.1
+          version: v2.7.2
           args: --timeout 5m0s
           skip-cache: true

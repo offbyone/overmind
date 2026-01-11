@@ -1,29 +1,26 @@
-run:
-  skip-dirs:
-    - .tmp
-    - vendor
+version: "2"
 
 linters:
-  disable-all: true
+  default: none
   enable:
-    # - errcheck
     - gocritic
     - goconst
-    - goimports
-    - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - stylecheck
-    - typecheck
     - unused
+  disable:
+    - errcheck
+  exclusions:
+    rules:
+      # Suppress ST1005 - error strings capitalization  
+      - linters: [staticcheck]
+        text: "error strings should not be capitalized"
+  settings:
+    govet:
+      enable:
+        - shadow
 
-linters-settings:
-  govet:
-    # report about shadowed variables
-    check-shadowing: true
-
-issues:
-  exclude-rules:
-    - linters: [stylecheck]
-      text: "ST1005:"
+formatters:
+  enable:
+    - goimports

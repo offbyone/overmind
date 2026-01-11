@@ -12,7 +12,8 @@ import (
 	"github.com/urfave/cli"
 )
 
-const version = "2.5.1"
+// version will be set by goreleaser via ldflags
+var version = "dev"
 
 func socketFlags(s, n *string) []cli.Flag {
 	return []cli.Flag{
